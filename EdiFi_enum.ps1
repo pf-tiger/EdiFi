@@ -28,3 +28,5 @@ ForEach ($SSID in $SSIDs) {
     $pair = $SSID + "," + $pw -replace $kc, "" | ForEach-Object {$_ -replace $kc_jp, ""}
     $pair | Add-Content ./wlanpass.csv
 }
+
+Write-Output "EdiFi: PW extraction Completed."
