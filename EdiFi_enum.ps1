@@ -1,11 +1,13 @@
 # This script is for enumerating wifi password on the device, and exporting the result to a text file.
 # Show registered Wi-Fi AP SSIDs to external files
-$aup = "    All User Profile     : "
-$kc  = "    Key Content            : "
+$aup   = "    All User Profile     : "
+$kc    = "    Key Content            : "
+$aup_jp = "    すべてのユーザー プロファイル     : "
+$kc_jp = "    主要なコンテンツ       : "
 
 netsh wlan show profiles | find " : "|Out-File ./SSIDs.txt 
 # clean up the data and delete unecessary parts.
-$SSID_list = Get-Content ./SSIDs.txt | ForEach-Object {$_ -replace $aup, ""}
+$SSID_list = Get-Content ./SSIDs.txt | ForEach-Object {$_ -replace $aup, ""} |ForEach-Object {$_ -replace $aup_jp, ""}
 $SSID_list | Out-File ./SSIDs.txt
 # Get-Content ./SSIDs.txt
 
@@ -23,6 +25,6 @@ function show_pw {
 
 ForEach ($SSID in $SSIDs) {
     $pw = show_pw $SSID
-    $pair = $SSID + "," + $pw -replace $kc, "" 
+    $pair = $SSID + "," + $pw -replace $kc, "" | ForEach-Object {$_ -replace $kc_jp, ""}
     $pair | Add-Content ./wlanpass.csv
 }
